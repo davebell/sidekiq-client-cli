@@ -40,9 +40,10 @@ class SidekiqClientCLI
   private
 
   def push_argument(arg)
-    jid = Sidekiq::Client.push({ 'class' => arg,
+    klass, args = arg.match(/\A(.*?)(?:\[(.*)\])?\Z/)
+    jid = Sidekiq::Client.push({ 'class' => klass,
                                  'queue' => settings.queue,
-                                 'args'  => [],
+                                 'args'  => (args && args.split(',')) || [],
                                  'retry' => settings.retry })
     p "Posted #{arg} to queue '#{settings.queue}', Job ID : #{jid}, Retry : #{settings.retry}"
     true
