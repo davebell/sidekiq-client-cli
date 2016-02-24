@@ -40,7 +40,7 @@ class SidekiqClientCLI
   private
 
   def push_argument(arg)
-    klass, args = arg.match(/\A(.*?)(?:\[(.*)\])?\Z/)
+    klass, args = arg.match(/\A(.*?)(?:\[(.*)\])?\Z/).captures
     jid = Sidekiq::Client.push({ 'class' => klass,
                                  'queue' => settings.queue,
                                  'args'  => (args && args.split(',')) || [],
